@@ -352,6 +352,7 @@ export default function Login({ onLogin }: LoginProps) {
                 <input 
                   type="email" 
                   required
+                  aria-label={t('login.email')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-muted border-none rounded-lg py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary outline-none transition-all"
@@ -370,6 +371,7 @@ export default function Login({ onLogin }: LoginProps) {
                 <input 
                   type={showPassword ? "text" : "password"}
                   required
+                  aria-label={t('login.password')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-muted border-none rounded-lg py-2.5 pl-10 pr-10 text-sm focus:ring-2 focus:ring-primary outline-none transition-all"
@@ -416,6 +418,7 @@ export default function Login({ onLogin }: LoginProps) {
             <button 
               type="submit" 
               disabled={isSubmitting}
+              aria-label={t('login.signin')}
               className={cn(
                 "w-full bg-primary text-primary-foreground font-medium py-3 rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2",
                 isSubmitting && "opacity-50 cursor-not-allowed"
