@@ -71,3 +71,11 @@ export const useTheme = () => {
 
   return context;
 };
+
+/** Returns the effective light/dark theme when using system preference. */
+export function getResolvedTheme(theme: Theme): 'light' | 'dark' {
+  if (theme === 'system') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  return theme;
+}
