@@ -175,3 +175,9 @@ export interface Intervention {
   status: 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
   type: 'LEVE' | 'BORNAGE' | 'IMPLANTATION' | 'VRD' | 'COPROPRIETE' | 'AUTRE';
 }
+
+export interface ApiError {
+  code: string;
+  message: string;
+  field?: string;
+}
