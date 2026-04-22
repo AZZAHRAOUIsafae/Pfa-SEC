@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
 import AdminLayout from "../layouts/AdminLayout.jsx"
 import ClientLayout from "../layouts/ClientLayout.jsx"
+import TopoLayout from "../layouts/TopoLayout.jsx"
 
 import Login from "../pages/auth/Login.jsx"
 
@@ -16,6 +17,8 @@ import ClientHome from "../pages/client/ClientHome.jsx"
 import ClientFactures from "../pages/client/ClientFactures.jsx"
 import ClientDocument from "../pages/client/ClientDocument.jsx"
 import ClientMap from "../pages/client/ClientMap.jsx"
+
+import TopoHome from "../pages/topographe/TopoHome.jsx"
 
 export default function RoutesApp() {
   return (
@@ -40,6 +43,11 @@ export default function RoutesApp() {
           <Route path="factures" element={<ClientFactures />} />
           <Route path="documents" element={<ClientDocument />} />
           <Route path="map" element={<ClientMap />} />
+        </Route>
+
+        <Route path="/topo" element={<TopoLayout />}>
+          <Route index element={<Navigate to="home" />} />
+          <Route path="home" element={<TopoHome />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" />} />
