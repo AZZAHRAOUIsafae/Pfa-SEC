@@ -16,7 +16,9 @@ export default function Dashboard() {
       label: 'Connexions',
       data: [10, 20, 15, 30],
       borderColor: '#3b82f6',
-      tension: 0.4
+      backgroundColor: 'rgba(59,130,246,0.2)',
+      tension: 0.4,
+      fill: true
     }]
   }
 
@@ -30,7 +32,20 @@ export default function Dashboard() {
 
   return (
     <div style={styles.container}>
-      <h1>📊 Dashboard</h1>
+      <h1>📊 Dashboard Administrateur</h1>
+
+      <div style={styles.stats}>
+        {[
+          { label: 'Utilisateurs', value: '6', color: '#3b82f6' },
+          { label: 'Documents', value: '18', color: '#8b5cf6' },
+          { label: 'Alertes', value: '2', color: '#ef4444' },
+        ].map((stat) => (
+          <div key={stat.label} style={{ ...styles.statBox, borderColor: stat.color }}>
+            <span style={styles.statValue}>{stat.value}</span>
+            <span>{stat.label}</span>
+          </div>
+        ))}
+      </div>
 
       <div style={styles.grid}>
         <div style={styles.box}>
