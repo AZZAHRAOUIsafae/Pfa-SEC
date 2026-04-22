@@ -42,15 +42,19 @@ export default function Documents() {
       {/* FILTER */}
       <input
         style={styles.input}
-        placeholder="🔍 Search..."
+        placeholder="🔍 Rechercher un document..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
 
       <div style={styles.tabs}>
-        <button onClick={() => setCat('all')}>All</button>
+        <button onClick={() => setCat('all')} style={cat === 'all' ? styles.tabActive : styles.tab}>Tous</button>
         {categories.map(c => (
-          <button key={c.id} onClick={() => setCat(c.id)}>
+          <button
+            key={c.id}
+            onClick={() => setCat(c.id)}
+            style={cat === c.id ? styles.tabActive : styles.tab}
+          >
             {c.label}
           </button>
         ))}
@@ -97,9 +101,41 @@ const styles = {
     color: 'white'
   },
   tabs: { display: 'flex', gap: 10, marginBottom: 10 },
+  tab: {
+    background: '#0f172a',
+    color: '#94a3b8',
+    border: '1px solid #334155',
+    borderRadius: 9999,
+    padding: '8px 16px',
+    cursor: 'pointer'
+  },
+  tabActive: {
+    background: '#3b82f6',
+    color: '#fff',
+    border: '1px solid #3b82f6',
+    borderRadius: 9999,
+    padding: '8px 16px',
+    cursor: 'pointer'
+  },
   table: {
     width: '100%',
     background: '#1e293b',
     borderRadius: 10
+  },
+  tab: {
+    background: '#0f172a',
+    color: '#94a3b8',
+    border: '1px solid #334155',
+    borderRadius: 9999,
+    padding: '8px 16px',
+    cursor: 'pointer'
+  },
+  tabActive: {
+    background: '#3b82f6',
+    color: '#fff',
+    border: '1px solid #3b82f6',
+    borderRadius: 9999,
+    padding: '8px 16px',
+    cursor: 'pointer'
   }
 }
