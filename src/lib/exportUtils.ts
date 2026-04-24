@@ -1,6 +1,15 @@
 import { User, Project, Notification, ProjectDocument } from '../types';
 
+/** Remove unsafe characters from downloaded file names. */
+export function sanitizeExportFilename(name: string): string {
+  return name
+    .replace(/[<>:"/\\|?*]/g, '-')
+    .replace(/\s+/g, '_')
+    .slice(0, 120);
+}
+
 export const exportToCSV = (data: any[], filename: string, metadataTitle: string, adminEmail: string) => {
+  const safeName = sanitizeExportFilename(filename);
   if (data.length === 0) return;
   
   const headers = Object.keys(data[0]).join(',');
@@ -21,12 +30,13 @@ export const exportToCSV = (data: any[], filename: string, metadataTitle: string
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${filename}.csv`;
+  a.download = `${safeName}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 };
 
 export const exportToJSON = (data: any[], filename: string, adminEmail: string) => {
+  const safeName = sanitizeExportFilename(filename);
   const blob = new Blob([JSON.stringify({ 
     metadata: { 
       exportedAt: new Date().toISOString(), 
@@ -38,7 +48,7 @@ export const exportToJSON = (data: any[], filename: string, adminEmail: string) 
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${filename}.json`;
+  a.download = `${safeName}.json`;
   a.click();
   URL.revokeObjectURL(url);
 };
