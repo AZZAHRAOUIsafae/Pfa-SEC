@@ -175,3 +175,12 @@ export interface Intervention {
   status: 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
   type: 'LEVE' | 'BORNAGE' | 'IMPLANTATION' | 'VRD' | 'COPROPRIETE' | 'AUTRE';
 }
+
+export interface DocumentAuditEntry {
+  id: string;
+  documentId: string;
+  action: 'UPLOAD' | 'APPROVE' | 'REJECT' | 'DELETE' | 'DOWNLOAD';
+  performedBy: string;
+  performedAt: string;
+  details?: string;
+}
