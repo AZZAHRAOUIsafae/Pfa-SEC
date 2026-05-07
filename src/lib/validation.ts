@@ -21,3 +21,12 @@ export function formatCurrency(amount: number, currency = 'MAD'): string {
     maximumFractionDigits: 2,
   }).format(amount);
 }
+
+export function isValidPhone(phone: string): boolean {
+  const digits = phone.replace(/\D/g, '');
+  return digits.length >= 9 && digits.length <= 15;
+}
+
+export function isValidRole(role: string): boolean {
+  return ['ADMIN', 'TOPOGRAPHER', 'CLIENT'].includes(role);
+}
