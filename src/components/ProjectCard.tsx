@@ -1,7 +1,7 @@
 import React from 'react';
 import { Project } from '../types';
 import { Calendar, MapPin, Clock, ArrowRight, Star } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn, formatDisplayDate } from '../lib/utils';
 
 interface ProjectCardProps {
   project: Project;
@@ -37,7 +37,7 @@ export default function ProjectCard({ project, onClick, onRate }: ProjectCardPro
       <div className="space-y-4">
         <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <Calendar className="w-4 h-4" />
-          <span>Deadline: {new Date(project.deadline).toLocaleDateString()}</span>
+          <span>Deadline: {formatDisplayDate(project.deadline)}</span>
         </div>
         <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <MapPin className="w-4 h-4" />
