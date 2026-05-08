@@ -17,3 +17,11 @@ export function searchUsersByName(users: User[], query: string): User[] {
       u.email.toLowerCase().includes(q)
   );
 }
+
+export function sortUsersByName(users: User[]): User[] {
+  return [...users].sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+}
+
+export function filterBannedUsers(users: User[]): User[] {
+  return users.filter((u) => u.isBanned);
+}
