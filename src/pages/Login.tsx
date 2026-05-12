@@ -15,6 +15,7 @@ import {
 import { User, UserRole } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
+import FormError from '../components/FormError';
 import { useTranslation } from 'react-i18next';
 
 interface LoginProps {
@@ -317,12 +318,7 @@ export default function Login({ onLogin }: LoginProps) {
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
-            {error && (
-              <div className="p-3 bg-destructive/10 text-destructive text-xs rounded-lg flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4" />
-                {error}
-              </div>
-            )}
+            {error && <FormError message={error} className="mb-2" />}
             <div className="space-y-3">
               <label className="text-sm font-medium">{t('login.role')}</label>
               <div className="grid grid-cols-3 gap-3">
