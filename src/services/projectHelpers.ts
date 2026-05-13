@@ -19,3 +19,11 @@ export function isProjectOverdue(project: Project): boolean {
   if (!project.deadline || project.status === 'COMPLETED') return false;
   return new Date(project.deadline) < new Date();
 }
+
+export function getProgressLabel(progress: number): string {
+  if (progress >= 100) return 'Terminé';
+  if (progress >= 75) return 'Presque terminé';
+  if (progress >= 50) return 'En cours';
+  if (progress > 0) return 'Démarré';
+  return 'Non commencé';
+}
