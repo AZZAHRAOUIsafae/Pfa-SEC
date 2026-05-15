@@ -11,3 +11,6 @@ export const ROLE_LABELS: Record<string, string> = {
   TOPOGRAPHER: 'Topographe',
   CLIENT: 'Client',
 };
+
+export const SESSION_TIMEOUT_MINUTES = 60;
+export const MAX_LOGIN_ATTEMPTS = 5;
