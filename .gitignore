@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 
+# Nested clone (not part of this repo)
+Pfa-SEC/
+
