@@ -1,0 +1,146 @@
+src/services/db.ts:60:      providerInfo: auth.currentUser?.providerData?.map(provider => ({
+src/services/db.ts:149:      const users = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as User));
+src/services/db.ts:164:      return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as User));
+src/services/db.ts:177:      return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as User));
+src/services/db.ts:193:      return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as User));
+src/services/db.ts:251:      const reqs = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as ConnectionRequest));
+src/services/db.ts:312:      const prjs = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as Project));
+src/services/db.ts:324:      return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as User));
+src/services/db.ts:435:      return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as Project));
+src/services/db.ts:598:      return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as ProjectDocument));
+src/services/db.ts:613:      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as ProjectDocument));
+src/services/db.ts:633:      return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as ProjectDocument));
+src/services/db.ts:645:      return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as ProjectDocument));
+src/services/db.ts:659:      return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as ProjectDocument));
+src/services/db.ts:775:      const msgs = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as Message));
+src/services/db.ts:841:      const notifs = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as Notification));
+src/services/db.ts:891:      return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) }));
+src/services/db.ts:905:      const reviews = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+src/services/db.ts:944:      const batch = snapshot.docs.map(d => updateDoc(doc(db, 'notifications', d.id), { read: true }));
+src/services/db.ts:960:      const notifs = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as Notification));
+src/services/db.ts:992:      const ints = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as Intervention));
+src/services/db.ts:1061:      const values = headers.map(header => {
+src/services/db.ts:1085:    const exportData = projects.map(p => ({
+src/components/TopoMapView.tsx:167:        ].map((tool, i) => (
+src/components/TopoMapView.tsx:247:          {points.map((p, i) => p.coordinates && (
+src/components/TopoMapView.tsx:259:          {markers.map((pos, i) => (
+src/components/DashboardLayout.tsx:123:          { name: t('nav.maps'), icon: Map, path: '/maps' },
+src/components/DashboardLayout.tsx:132:          { name: t('nav.maps'), icon: Map, path: '/maps' },
+src/components/DashboardLayout.tsx:170:            {navItems.map((item, i) => (
+src/components/DashboardLayout.tsx:240:                        {searchResults.projects.map((p, i) => (
+src/components/DashboardLayout.tsx:266:                        {searchResults.users.map((u, i) => (
+src/components/DashboardLayout.tsx:292:                        {searchResults.documents.map((d, i) => (
+src/components/DashboardLayout.tsx:354:                    ].map((lang) => (
+src/components/DashboardLayout.tsx:400:                      notifications.map((n, i) => (
+src/components/DocumentGeneratorModal.tsx:92:                {(['QUOTE', 'INVOICE'] as const).map(t => (
+src/components/DocumentGeneratorModal.tsx:117:                {projects.map(p => (
+src/components/DocumentGeneratorModal.tsx:137:              {items.map((item, index) => (
+src/components/ProjectDetailsOverlay.tsx:57:            const coords = feature.geometry.coordinates[0].map((c: any) => ({ lat: c[1], lng: c[0] }));
+src/components/ProjectDetailsOverlay.tsx:61:            const coords = feature.geometry.coordinates.map((c: any) => ({ lat: c[1], lng: c[0] }));
+src/components/ProjectDetailsOverlay.tsx:135:                        {t('project.map_title')}
+src/components/ProjectDetailsOverlay.tsx:139:                          ? t('project.map_subtitle_topo')
+src/components/ProjectDetailsOverlay.tsx:140:                          : t('project.map_subtitle_client')}
+src/components/ProjectDetailsOverlay.tsx:229:                {STEPS.map((step, i) => {
+src/components/ProjectDetailsOverlay.tsx:299:                  {projectDocs.map((doc, i) => (
+src/components/ProjectMap.tsx:169:          initialData={project.mapData} 
+src/components/RatingSystem.tsx:50:          {[1, 2, 3, 4, 5].map((star) => (
+src/pages/ClientMaps.tsx:105:          <h1 className="text-2xl font-bold tracking-tight">{t('client.maps_title')}</h1>
+src/pages/ClientMaps.tsx:106:          <p className="text-muted-foreground text-sm">{t('client.maps_subtitle')}</p>
+src/pages/ClientMaps.tsx:165:                {mapType === 'k' ? t('client.map_view') : t('client.satellite_view')}
+src/pages/ClientMaps.tsx:183:              link.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(selectedProject?.mapData || { type: 'FeatureCollection', features: [] }));
+src/pages/ClientMaps.tsx:206:          {projects.map((project, i) => (
+src/pages/Register.tsx:299:                    {Country.getAllCountries().map((c, i) => (
+src/pages/Register.tsx:317:                    {City.getCitiesOfCountry(formData.country)?.map((c, idx) => (
+src/pages/Register.tsx:415:                    {[1, 2, 3, 4].map((step, i) => (
+src/pages/Login.tsx:343:                ].map((lang) => (
+src/pages/Login.tsx:384:                {(['CLIENT', 'TOPOGRAPHER', 'ADMIN'] as UserRole[]).map((r, i) => (
+src/pages/PublicProfile.tsx:180:                  reviews.map((review, i) => (
+src/pages/PublicProfile.tsx:195:                              {[1, 2, 3, 4, 5].map((s) => (
+src/pages/ClientChat.tsx:279:          {contacts.map((contact, i) => (
+src/pages/ClientChat.tsx:404:                {messages.filter(m => !m.deletedBy?.includes(user.id)).map((msg, i) => (
+src/pages/ClientChat.tsx:640:                  availableTopographers.map((topo, i) => (
+src/pages/AdminDashboard.tsx:104:        dataToExport = users.map(u => ({ 
+src/pages/AdminDashboard.tsx:115:        dataToExport = allProjects.map(p => ({ 
+src/pages/AdminDashboard.tsx:125:        dataToExport = financialDocs.map(d => ({
+src/pages/AdminDashboard.tsx:135:        dataToExport = auditLogs.map(l => ({
+src/pages/AdminDashboard.tsx:180:      setFailedLoginLogs(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+src/pages/AdminDashboard.tsx:254:  const financeData = last6Months.map(month => {
+src/pages/AdminDashboard.tsx:266:      projects: new Set(monthDocs.map(d => d.projectId)).size
+src/pages/AdminDashboard.tsx:270:  const activityLog = auditLogs.slice(0, 5).map(log => ({
+src/pages/AdminDashboard.tsx:416:                  ].map((lang) => (
+src/pages/AdminDashboard.tsx:459:                    ].map((item, idx) => (
+src/pages/AdminDashboard.tsx:490:        {stats.map((stat, i) => (
+src/pages/AdminDashboard.tsx:514:        {(['users', 'documents', 'finance', 'registry', 'audit', 'messages'] as const).map((tab, i) => (
+src/pages/AdminDashboard.tsx:544:                    {incomingRequests.map((req, i) => (
+src/pages/AdminDashboard.tsx:610:                    {filteredUsers.filter(u => u.id !== auth.currentUser?.uid).map((user, i) => (
+src/pages/AdminDashboard.tsx:732:                  {users.filter(u => u.id !== auth.currentUser?.uid && u.role === 'TOPOGRAPHER').map((user, i) => (
+src/pages/AdminDashboard.tsx:773:                      {activeMessages.map((msg, i) => {
+src/pages/AdminDashboard.tsx:830:                  ].map((stat, i) => (
+src/pages/AdminDashboard.tsx:865:                          {financeData.map((entry, index) => (
+src/pages/AdminDashboard.tsx:892:                        {financialDocs.length > 0 ? financialDocs.slice(0, 8).map((doc, i) => (
+src/pages/AdminDashboard.tsx:930:                {allDocs.length > 0 ? allDocs.map((doc, i) => (
+src/pages/AdminDashboard.tsx:986:                    {allProjects.map((prj, i) => (
+src/pages/AdminDashboard.tsx:1045:                {auditLogs.map((log, i) => (
+src/pages/AdminDashboard.tsx:1100:                      {failedLoginLogs.map((log, i) => (
+src/pages/AdminDashboard.tsx:1154:              {(auditLogs || []).slice(0, 10).map((notif, i) => (
+src/pages/AdminDashboard.tsx:1288:                {selectedStatList.users.map((user, i) => (
+src/pages/Settings.tsx:144:          user.blockedUids.map(uid => dbService.getUser(uid))
+src/pages/Settings.tsx:284:          {menuItems.map((item, i) => (
+src/pages/Settings.tsx:393:                        {Country.getAllCountries().map((c, i) => (
+src/pages/Settings.tsx:406:                        {City.getCitiesOfCountry(Country.getAllCountries().find(c => c.name === formData.country || c.isoCode === formData.country)?.isoCode || 'MA')?.map((c, idx) => (
+src/pages/Settings.tsx:605:                                      {Array.from({ length: 16 }).map((_, i) => (
+src/pages/Settings.tsx:673:                    {user.loginHistory && user.loginHistory.length > 0 ? user.loginHistory.map((item, idx) => (
+src/pages/Settings.tsx:735:                    {blockedProfiles.length > 0 ? blockedProfiles.map((item, i) => (
+src/pages/Settings.tsx:777:                    {bannedUsers.length > 0 ? bannedUsers.map((item, i) => (
+src/pages/Settings.tsx:829:                    {filteredTopographers.length > 0 ? filteredTopographers.map((topo, i) => (
+src/pages/ClientDashboard.tsx:100:      dataToExport = projects.map(p => ({
+src/pages/ClientDashboard.tsx:108:      dataToExport = documents.map(d => ({
+src/pages/ClientDashboard.tsx:378:                  {projects.map((p, i) => (
+src/pages/ClientDashboard.tsx:442:              {documents.length > 0 ? documents.map((doc, i) => (
+src/pages/ClientDashboard.tsx:508:                  {topographers.map((t, i) => (
+src/pages/ClientDashboard.tsx:584:                  ].map((lang) => (
+src/pages/ClientDashboard.tsx:625:                    ].map((item) => (
+src/pages/ClientDashboard.tsx:726:        ].map((stat, i) => (
+src/pages/ClientDashboard.tsx:779:            {projects.map((project, i) => (
+src/pages/ClientDashboard.tsx:839:              {notifications.length > 0 ? notifications.slice(0, 6).map((notif, i) => (
+src/pages/ClientDashboard.tsx:943:                    {proSearchResults.map((pro, i) => (
+src/pages/TopographerDashboard.tsx:128:      dataToExport = projects.map(p => ({
+src/pages/TopographerDashboard.tsx:136:      dataToExport = documents.filter(d => ['INVOICE', 'QUOTE'].includes(d.type)).map(d => ({
+src/pages/TopographerDashboard.tsx:584:        dbService.exportToCSV(projects.map(p => ({
+src/pages/TopographerDashboard.tsx:594:        dbService.exportToCSV(documents.map(d => ({
+src/pages/TopographerDashboard.tsx:603:        dbService.exportToCSV(interventions.map(i => ({
+src/pages/TopographerDashboard.tsx:655:                    ].map((lang) => (
+src/pages/TopographerDashboard.tsx:696:                    ].map((item) => {
+src/pages/TopographerDashboard.tsx:729:        {stats.map((stat, i) => (
+src/pages/TopographerDashboard.tsx:748:        {(['projects', 'planning', 'maps', 'finance', 'uploads', 'technical', 'reviews'] as const).map((tab, i) => (
+src/pages/TopographerDashboard.tsx:787:              {projects.map((p, i) => (
+src/pages/TopographerDashboard.tsx:804:                      {p.technicalFiles && p.technicalFiles.length > 0 ? p.technicalFiles.map((file, fileIdx) => (
+src/pages/TopographerDashboard.tsx:851:              {interventions.length > 0 ? interventions.map((int, intIdx) => (
+src/pages/TopographerDashboard.tsx:932:                  {incomingRequests.map((req, i) => (
+src/pages/TopographerDashboard.tsx:980:                    {projects.map((p, i) => (
+src/pages/TopographerDashboard.tsx:1013:                                {STEPS.map((step, i) => (
+src/pages/TopographerDashboard.tsx:1127:                      {projects.map((p, i) => (
+src/pages/TopographerDashboard.tsx:1240:                      {documents.filter(d => ['INVOICE', 'QUOTE', 'ORDER'].includes(d.type)).map((doc, i) => (
+src/pages/TopographerDashboard.tsx:1291:                {projects.map((p, i) => {
+src/pages/TopographerDashboard.tsx:1382:                    {projects.map((p, i) => <option key={`project-opt-${p.id}-${i}`} value={p.id}>{p.name}</option>)}
+src/pages/TopographerDashboard.tsx:1432:                {documents.filter(d => !['INVOICE', 'QUOTE', 'ORDER'].includes(d.type)).map((doc, i) => (
+src/pages/TopographerDashboard.tsx:1465:                    {[1, 2, 3, 4, 5].map(star => (
+src/pages/TopographerDashboard.tsx:1474:                {[5, 4, 3, 2, 1].map((rating) => {
+src/pages/TopographerDashboard.tsx:1494:              {reviews.map((review, i) => (
+src/pages/TopographerDashboard.tsx:1513:                      {[1, 2, 3, 4, 5].map(star => (
+src/pages/TopographerDashboard.tsx:1593:                    {projects.map((p, i) => (
+src/pages/TopographerDashboard.tsx:1656:                    {projects.map((p, i) => (
+src/pages/TopographerDashboard.tsx:1783:                    {projects.map((p, i) => (
+src/pages/TopographerDashboard.tsx:1804:                    }).map((p, i) => (
+src/pages/TopographerDashboard.tsx:1823:                    {projects.map((p, i) => (
+src/pages/TopographerDashboard.tsx:1839:                    {documents.filter(d => d.type === 'INVOICE' || d.type === 'QUOTE').map((doc, i) => (
+src/pages/TopographerDashboard.tsx:1960:                      {projects.map((p, idx) => (
+src/pages/TopographerDashboard.tsx:1980:                      {documents.map((d, docIdx) => (
+src/pages/TopographerDashboard.tsx:2004:                      {interventions.map((i, intIdx) => (
+src/pages/TopographerDashboard.tsx:2078:                    {clients.map((c, i) => <option key={`client-opt-${c.id}-${i}`} value={c.id}>{c.name} ({c.company})</option>)}
+src/pages/Chatbot.tsx:92:          {messages.map((msg, i) => (
+src/pages/Onboarding.tsx:125:                ].map((lang) => (
+src/pages/Onboarding.tsx:198:              {slides.map((_, index) => (
+src/lib/exportUtils.ts:7:  const rows = data.map(obj => 
+src/lib/exportUtils.ts:8:    Object.values(obj).map(val => {
+src/App.tsx:131:    setUsers(prev => prev.map(u => u.id === id ? { ...u, isBanned } : u));

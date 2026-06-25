@@ -85,6 +85,27 @@
       },
       "required": ["senderId", "receiverId", "text", "timestamp"]
     },
+    "Intervention": {
+      "title": "Intervention",
+      "description": "Field intervention or appointment",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "projectId": { "type": "string" },
+        "projectName": { "type": "string" },
+        "topographerId": { "type": "string" },
+        "clientId": { "type": "string" },
+        "date": { "type": "string" },
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["PLANNED", "IN_PROGRESS", "COMPLETED", "CANCELLED"] },
+        "type": { "type": "string", "enum": ["LEVE", "BORNAGE", "IMPLANTATION", "VRD", "COPROPRIETE", "AUTRE"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["projectId", "topographerId", "clientId", "date", "startTime", "title"]
+    },
     "FailedLogin": {
       "title": "Failed Login",
       "description": "Log of a failed login attempt",
@@ -110,6 +131,19 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["projectId", "clientId", "topographerId", "rating"]
+    },
+    "AdminOTP": {
+      "title": "Admin OTP",
+      "description": "Transient OTP for Admin Two-Factor Authentication",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "code": { "type": "string" },
+        "expiresAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "email", "code", "expiresAt"]
     }
   },
   "firestore": {
@@ -129,6 +163,10 @@
       "schema": "Message",
       "description": "Internal chat messages"
     },
+    "interventions": {
+      "schema": "Intervention",
+      "description": "Field interventions and appointments"
+    },
     "failed_logins": {
       "schema": "FailedLogin",
       "description": "Security logs for failed login attempts"
@@ -136,6 +174,10 @@
     "reviews": {
       "schema": "Review",
       "description": "Topographer reviews"
+    },
+    "admin_otps": {
+      "schema": "AdminOTP",
+      "description": "Transient OTPs for Admin Two-Factor Authentication"
     }
   }
 }

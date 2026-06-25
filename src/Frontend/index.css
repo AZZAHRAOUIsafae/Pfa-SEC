@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+@import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+
+@theme {
+  --color-brand: #090d16;
+  --color-brand-foreground: #ffffff;
+  --color-accent-topo: #ff7c1f;
+  
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Custom sizes & visual properties */
+  --spacing-section: 4.5rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
+  --radius-5xl: 3.5rem;
+  
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse-slow 8s ease-in-out infinite;
+  --animate-scan: scan 4s linear infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(0.5deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+@keyframes scan {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(79, 70, 229, 0.2), 0 0 10px rgba(79, 70, 229, 0.1); }
+  100% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.45), 0 0 25px rgba(79, 70, 229, 0.25); }
+}
+
+@layer base {
+  :root {
+    --background: #f8fafc;
+    --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --popover: #ffffff;
+    --popover-foreground: #0f172a;
+    --primary: #4F46E5; /* Royal Indigo */
+    --primary-foreground: #ffffff;
+    --secondary: #f1f5f9;
+    --secondary-foreground: #0f172a;
+    --muted: #f8fafc;
+    --muted-foreground: #64748b;
+    --accent: #ff6b00; /* Energetic Orange */
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #e2e8f0;
+    --input: #f1f5f9;
+    --ring: #4F46E5;
+    --radius: 1.25rem;
+  }
+
+  .dark {
+    --background: #060913; /* Cyber space background */
+    --foreground: #f1f5f9;
+    --card: #0d1222; /* Premium dark blue card */
+    --card-foreground: #f1f5f9;
+    --popover: #0d1222;
+    --popover-foreground: #f1f5f9;
+    --primary: #6366f1; /* Neon-ready Violet */
+    --primary-foreground: #ffffff;
+    --secondary: #13192e;
+    --secondary-foreground: #f1f5f9;
+    --muted: #13192e;
+    --muted-foreground: #94a3b8;
+    --accent: #f59e0b; /* High contrast energetic yellow-gold */
+    --accent-foreground: #090d16;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #1e294b; /* Subtle electric-aligned borders */
+    --input: #13192e;
+    --ring: #6366f1;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border/60;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply transition-colors duration-500 font-sans tracking-tight antialiased;
+    background-attachment: fixed;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-black tracking-tight text-balance;
+  }
+}
+
+@layer components {
+  /* Ultra visual glassmorphism with high-vibrancy border accents */
+  .glass-card {
+    @apply bg-card/75 backdrop-blur-2xl border border-white/10 dark:border-white/5 shadow-2xl shadow-primary/5 dark:shadow-black/20;
+  }
+
+  /* Vibrant sweeping modern mesh gradient background */
+  .mesh-gradient {
+    background-color: var(--background);
+    background-image: 
+      radial-gradient(at 15% 15%, rgba(99, 102, 241, 0.12) 0px, transparent 40%),
+      radial-gradient(at 85% 15%, rgba(245, 158, 11, 0.1) 0px, transparent 40%),
+      radial-gradient(at 85% 85%, rgba(99, 102, 241, 0.08) 0px, transparent 40%),
+      radial-gradient(at 15% 85%, rgba(6, 182, 212, 0.08) 0px, transparent 40%);
+  }
+
+  /* Animated smooth bento box with subtle scale feedback & glow reflection */
+  .bento-card {
+    @apply bg-card border border-border/40 rounded-[2rem] p-7 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1.5 hover:bg-card/90 overflow-hidden relative;
+  }
+
+  /* Authentic topographical map layout blueprint theme */
+  .topo-grid {
+    background-size: 80px 80px;
+    background-image: 
+      linear-gradient(to right, rgba(99, 102, 241, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+    position: relative;
+  }
+  
+  .topo-grid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(99, 102, 241, 0.02) 2px, transparent 2px);
+    background-size: 20px 20px;
+    opacity: 0.6;
+  }
+
+  /* High-end design action button with vibrant scaling and sleek label transition */
+  .btn-modern {
+    @apply relative overflow-hidden px-7 py-3.5 rounded-[1.5rem] font-black text-xs uppercase tracking-widest transition-all duration-300 active:scale-95 shadow-xl shadow-primary/15 hover:shadow-primary/30 bg-primary text-white hover:brightness-110 flex items-center justify-center gap-3 cursor-pointer select-none;
+  }
+  
+  .btn-modern::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  
+  .btn-modern:hover::after {
+    transform: translateX(100%);
+  }
+
+  /* Active glow statuses and cyber badges */
+  .cyber-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase bg-primary/10 text-primary border border-primary/25 shadow-sm;
+  }
+
+  .accent-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase bg-accent/10 text-accent border border-accent/25 shadow-sm;
+  }
+}
+
+.markdown-body {
+  @apply text-foreground/85 leading-relaxed font-sans text-sm;
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+  @apply font-display text-foreground font-extrabold tracking-tight mt-6 mb-3;
+}
+
+/* Leaflet map customization overlays */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.leaflet-bar {
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.leaflet-bar a {
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+  border-bottom: 1px solid var(--border) !important;
+  transition: all 0.2s ease;
+}
+
+.leaflet-bar a:hover {
+  background-color: var(--secondary) !important;
+}
+
+/* Custom scrollbar behaviors */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
