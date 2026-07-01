@@ -22,8 +22,8 @@ const slides = [
     titleKey: 'onboarding.robot_title',
     descKey: 'onboarding.robot_desc',
     color: 'bg-indigo-500/10 text-indigo-500',
-    video: 'https://cdn.pixabay.com/vimeo/370331493/futuristic-31517.mp4?width=1280&hash=850e05e55e8c998e3b4a4d6f85e3a89e9d6d8f8e',
-    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1200'
+    
+    image: 'https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=1200'
   },
   {
     id: 1,
@@ -47,7 +47,7 @@ const slides = [
     titleKey: 'onboarding.slide3_title',
     descKey: 'onboarding.slide3_desc',
     color: 'bg-amber-500/10 text-amber-500',
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=1200'
+    image: 'https://images.unsplash.com/photo-1590069261209-f8e9b8642343?q=80&w=1200'
   },
   {
     id: 4,
