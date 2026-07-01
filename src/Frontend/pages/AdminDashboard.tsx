@@ -436,8 +436,7 @@ export default function AdminDashboard({ user, users, setUsers, onBanUser, notif
             className="btn-modern"
           >
             <UserPlus className="w-5 h-5" />
-            {t('dashboard.add_user')}
-          </button>
+Add User          </button>
           
           <div className="relative z-30">
             <button 

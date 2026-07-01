@@ -264,4 +264,3 @@ Le système enregistre chaque action de sécurité sensible, notamment dans la c
 Le projet **DataTopoGuard (TopoPro Maroc)** apporte une dimension technologique incontournable au secteur topographique marocain. En regroupant outils cartographiques, messagerie, édition documentaire sécurisée et facturation en un seul espace SaaS, il offre une plateforme robuste et évolutive prête pour le monde professionnel.
 
 ---
-*Réalisé dans le cadre du PFA par AZZAHRAOUI Safae.*
