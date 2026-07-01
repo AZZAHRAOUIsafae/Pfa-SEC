@@ -101,6 +101,30 @@ export const pdfService = {
       `${((item.price || 0) * (item.quantity || 1)).toLocaleString('fr-FR')} DH`
     ]);
 
+    let tableStartY = 104;
+if (doc.type === 'QUOTE') {
+  pdf.setDrawColor(245, 158, 11); // Bordure dorée (Amber-500)
+  pdf.setFillColor(254, 252, 232); // Fond doux
+  pdf.rect(20, 98, pageWidth - 40, 18, 'FD');
+
+  pdf.setFontSize(8);
+  pdf.setFont('helvetica', 'bold');
+  pdf.setTextColor(180, 83, 9); // Texte marron/doré
+  pdf.text('SPECIFICATIONS DU DEVIS (TOPOGRAPHIE)', 24, 103);
+
+  pdf.setFontSize(8);
+  pdf.setFont('helvetica', 'normal');
+  pdf.setTextColor(120, 53, 4);
+
+  const specLeft = `Validite: ${doc.metadata?.validityDays || '30'} jours   |   Delai d'execution: ${doc.metadata?.executionPeriod || '15 jours'}   |   Acompte requis: ${doc.metadata?.depositPercent === '0' ? 'Aucun' : `${doc.metadata?.depositPercent || '30'}% à la commande`}`;
+  const specRight = `Superficie: ${doc.metadata?.terrainArea || 'Non specifiee'}   |   Localisation: ${doc.metadata?.terrainLocation || 'Non specifiee'}`;
+  
+  pdf.text(specLeft, 24, 108);
+  pdf.text(specRight, 24, 112);
+
+  tableStartY = 122; // Décale le tableau vers le bas pour ne pas chevaucher
+}
+
     autoTable(pdf, {
       startY: 104,
       head: [['Désignation des Prestations', 'Op. Qté', 'Prix Unitaire (HT)', 'Montant (HT)']],

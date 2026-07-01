@@ -107,15 +107,25 @@ service cloud.firestore {
           resource.data.get('adminEmail', '') == request.auth.token.email))
       ));
 
-      allow list: if (resource.data.role == 'ADMIN') || (isSignedIn() && (
+      allow list: if isSignedIn() && (
         isSystemAdmin() ||
         isCompanyAdmin(resource.data.get('company', '')) ||
+        resource.data.role == 'ADMIN' ||
         resource.data.role == 'TOPOGRAPHER' ||
-        (resource.data.role == 'CLIENT' && 
-         (resource.data.get('linkedTopographerId', '') == request.auth.uid || 
-          resource.data.get('adminId', '') == request.auth.uid ||
-          resource.data.get('adminEmail', '') == request.auth.token.email))
-      ));
+        (resource.data.role == 'CLIENT' &&
+          (
+            resource.data.get('linkedTopographerId', '') == request.auth.uid ||
+            resource.data.get('adminId', '') == request.auth.uid ||
+            resource.data.get('adminEmail', '') == request.auth.token.email ||
+            (
+              resource.data.get('company', '') != '' &&
+              exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('company', '') == resource.data.get('company', '') &&
+              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'TOPOGRAPHER'
+            )
+          )
+        )
+      );
 
       allow create: if isSignedIn() && (
         (isOwner(userId) && isValidUser(incoming())) ||
@@ -167,9 +177,9 @@ service cloud.firestore {
       );
 
       allow list: if isSignedIn() && (
-        canAdminAccessProject(resource.data) ||
         resource.data.clientId == request.auth.uid ||
-        resource.data.topographerId == request.auth.uid
+        resource.data.topographerId == request.auth.uid ||
+        canAdminAccessProject(resource.data)
       );
 
       allow create: if isSignedIn() && isEmailVerified() && isValidId(projectId) && isValidProject(incoming()) && (
@@ -233,15 +243,15 @@ service cloud.firestore {
       );
 
       allow list: if isSignedIn() && (
+        resource.data.clientId == request.auth.uid ||
+        resource.data.topographerId == request.auth.uid ||
         isSystemAdmin() ||
         isCompanyAdmin(resource.data.get('company', '')) ||
         (
           // Admin check by project
           exists(/databases/$(database)/documents/projects/$(resource.data.projectId)) &&
           canAdminAccessProject(get(/databases/$(database)/documents/projects/$(resource.data.projectId)).data)
-        ) ||
-        resource.data.clientId == request.auth.uid ||
-        resource.data.topographerId == request.auth.uid
+        )
       );
 
       allow create: if isSignedIn() && isEmailVerified() && isValidId(docId) && isValidDocument(incoming()) && (

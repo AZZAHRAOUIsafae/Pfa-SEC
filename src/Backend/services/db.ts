@@ -1,13 +1,13 @@
-import { 
-  collection, 
-  doc, 
-  getDoc, 
-  getDocs, 
-  setDoc, 
-  updateDoc, 
-  deleteDoc, 
-  query, 
-  where, 
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
   onSnapshot,
   Timestamp,
   serverTimestamp,
@@ -161,7 +161,7 @@ export const dbService = {
   subscribeToUsers(callback: (users: User[]) => void, company?: string, adminEmail?: string) {
     const path = 'users';
     let q = query(collection(db, 'users'), orderBy('name', 'asc'));
-    
+
     const systemAdmins = [
       'ahmed@gmail.com',
       'contact@topopro.ma',
@@ -190,7 +190,7 @@ export const dbService = {
     const path = 'users';
     try {
       let q: any = collection(db, 'users');
-      
+
       const systemAdmins = [
         'ahmed@gmail.com',
         'contact@topopro.ma',
@@ -230,13 +230,48 @@ export const dbService = {
   async getClientsForTopographer(topographerId: string): Promise<User[]> {
     const path = 'users';
     try {
-      const q = query(
-        collection(db, 'users'), 
+      // 1. Get clients directly linked to this topographer
+      const linkedQuery = query(
+        collection(db, 'users'),
         where('role', '==', 'CLIENT'),
         where('linkedTopographerId', '==', topographerId)
       );
-      const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as User));
+
+      // 2. Get the topographer's own info to find company/adminEmail
+      const topoDoc = await getDoc(doc(db, 'users', topographerId));
+      const topoData = topoDoc.exists() ? topoDoc.data() : null;
+
+      const promises: Promise<any>[] = [getDocs(linkedQuery)];
+
+      // 3. If topographer belongs to a company, also fetch all clients of that company
+      if (topoData?.company && topoData.company.trim() !== '') {
+        const companyQuery = query(
+          collection(db, 'users'),
+          where('role', '==', 'CLIENT'),
+          where('company', '==', topoData.company)
+        );
+        promises.push(getDocs(companyQuery));
+      } else if (topoData?.adminEmail) {
+        // Fallback: fetch clients sharing the same adminEmail
+        const adminEmailQuery = query(
+          collection(db, 'users'),
+          where('role', '==', 'CLIENT'),
+          where('adminEmail', '==', topoData.adminEmail)
+        );
+        promises.push(getDocs(adminEmailQuery));
+      }
+
+      const snapshots = await Promise.all(promises);
+
+      // Merge and deduplicate results by user id
+      const clientsMap = new Map<string, User>();
+      for (const snapshot of snapshots) {
+        snapshot.docs.forEach((d: any) => {
+          clientsMap.set(d.id, { id: d.id, ...(d.data() as any) } as User);
+        });
+      }
+
+      return Array.from(clientsMap.values());
     } catch (error) {
       handleFirestoreError(error, OperationType.LIST, path);
       return [];
@@ -310,7 +345,7 @@ export const dbService = {
 
       if (status === 'ACCEPTED') {
         const receiver = await this.getUser(requestData.receiverId);
-        
+
         // Link Client to Pro (Topographer or Admin)
         const updateData: any = {
           linkedTopographerId: requestData.receiverId,
@@ -369,7 +404,7 @@ export const dbService = {
   subscribeToProjects(role: UserRole, userId: string, callback: (projects: Project[]) => void, adminEmail?: string, company?: string) {
     const path = 'projects';
     let q;
-    
+
     if (role === 'ADMIN') {
       if (company && company.trim() !== '') {
         q = query(collection(db, 'projects'), where('company', '==', company), orderBy('createdAt', 'desc'));
@@ -379,9 +414,9 @@ export const dbService = {
         q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
       }
     } else if (role === 'TOPOGRAPHER') {
-      q = query(collection(db, 'projects'), where('topographerId', '==', userId), orderBy('createdAt', 'desc'));
+      q = query(collection(db, 'projects'), where('topographerId', '==', userId));
     } else {
-      q = query(collection(db, 'projects'), where('clientId', '==', userId), orderBy('createdAt', 'desc'));
+      q = query(collection(db, 'projects'), where('clientId', '==', userId));
     }
 
     return onSnapshot(q, (snapshot) => {
@@ -416,7 +451,7 @@ export const dbService = {
       const userSnap = await getDoc(userRef);
       if (userSnap.exists()) {
         const userData = userSnap.data() as User;
-        
+
         // Track new device alert
         const isNewDevice = userData.lastDeviceInfo && (userData.lastDeviceInfo.device !== info.device);
         const isNewLocation = userData.lastDeviceInfo && (userData.lastDeviceInfo.location !== info.location);
@@ -428,7 +463,7 @@ export const dbService = {
 
         const loginCount = (userData.loginCount || 0) + 1;
 
-        await updateDoc(userRef, { 
+        await updateDoc(userRef, {
           loginHistory: newLoginHistory,
           loginCount: loginCount,
           lastDeviceInfo: info,
@@ -473,7 +508,7 @@ export const dbService = {
         }
       }
     } catch (error) {
-       console.error('Failed to log login:', error);
+      console.error('Failed to log login:', error);
     }
   },
 
@@ -486,10 +521,10 @@ export const dbService = {
   async banUser(uid: string, isBanned: boolean): Promise<void> {
     const path = `users/${uid}`;
     try {
-      await updateDoc(doc(db, 'users', uid), { 
+      await updateDoc(doc(db, 'users', uid), {
         isBanned,
         status: isBanned ? 'offline' : 'online',
-        updatedAt: serverTimestamp() 
+        updatedAt: serverTimestamp()
       });
     } catch (error) {
       handleFirestoreError(error, OperationType.UPDATE, path);
@@ -628,7 +663,7 @@ export const dbService = {
       if (atMatch) {
         return { lat: parseFloat(atMatch[1]), lng: parseFloat(atMatch[2]) };
       }
-      
+
       // Logic for query format: https://www.google.com/maps/search/?api=1&query=33.5724128,-7.5891328
       const queryMatch = url.match(/query=(-?\d+\.\d+),(-?\d+\.\d+)/);
       if (queryMatch) {
@@ -647,13 +682,13 @@ export const dbService = {
     if (coords.length < 3) return 0;
     let area = 0;
     const radius = 6378137; // Earth's radius in meters
-    
+
     for (let i = 0; i < coords.length; i++) {
-        const p1 = coords[i];
-        const p2 = coords[(i + 1) % coords.length];
-        area += (p2.lng - p1.lng) * (2 + Math.sin(p1.lat * Math.PI / 180) + Math.sin(p2.lat * Math.PI / 180));
+      const p1 = coords[i];
+      const p2 = coords[(i + 1) % coords.length];
+      area += (p2.lng - p1.lng) * (2 + Math.sin(p1.lat * Math.PI / 180) + Math.sin(p2.lat * Math.PI / 180));
     }
-    
+
     return Math.abs(area * radius * radius / 2 * Math.PI / 180);
   },
 
@@ -661,21 +696,21 @@ export const dbService = {
   calculatePerimeter(coords: { lat: number, lng: number }[]): number {
     let perimeter = 0;
     const radius = 6378137;
-    
+
     for (let i = 0; i < coords.length - 1; i++) {
       const p1 = coords[i];
       const p2 = coords[i + 1];
-      
+
       const dLat = (p2.lat - p1.lat) * Math.PI / 180;
       const dLng = (p2.lng - p1.lng) * Math.PI / 180;
-      
+
       const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(p1.lat * Math.PI / 180) * Math.cos(p2.lat * Math.PI / 180) *
-                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        Math.cos(p1.lat * Math.PI / 180) * Math.cos(p2.lat * Math.PI / 180) *
+        Math.sin(dLng / 2) * Math.sin(dLng / 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       perimeter += radius * c;
     }
-    
+
     return perimeter;
   },
 
@@ -718,9 +753,9 @@ export const dbService = {
     const field = role === 'CLIENT' ? 'clientId' : 'topographerId';
     const q = role === 'ADMIN'
       ? (company && company.trim() !== ''
-          ? query(collection(db, 'documents'), where('company', '==', company), orderBy('createdAt', 'desc'))
-          : query(collection(db, 'documents'), orderBy('createdAt', 'desc')))
-      : query(collection(db, 'documents'), where(field, '==', userId), orderBy('createdAt', 'desc'));
+        ? query(collection(db, 'documents'), where('company', '==', company), orderBy('createdAt', 'desc'))
+        : query(collection(db, 'documents'), orderBy('createdAt', 'desc')))
+      : query(collection(db, 'documents'), where(field, '==', userId));
 
     return onSnapshot(q, (snapshot) => {
       const docs = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as ProjectDocument));
@@ -736,13 +771,13 @@ export const dbService = {
       const field = role === 'CLIENT' ? 'clientId' : 'topographerId';
       const q = query(collection(db, 'documents'), where(field, '==', userId), orderBy('createdAt', 'desc'));
       const querySnapshot = await getDocs(q);
-      
+
       if (querySnapshot.empty) {
         // Fallback for older documents without clientId/topographerId
         // This might be what's currently failing if we use high-level listing without projectId filter
         return [];
       }
-      
+
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as ProjectDocument));
     } catch (error) {
       handleFirestoreError(error, OperationType.LIST, path);
@@ -782,13 +817,13 @@ export const dbService = {
       const messagesRef = collection(db, 'messages');
       const q1 = query(messagesRef, where('senderId', '==', userId));
       const q2 = query(messagesRef, where('receiverId', '==', userId));
-      
+
       const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
-      
+
       const contactIds = new Set<string>();
       snap1.docs.forEach(doc => contactIds.add(doc.data().receiverId));
       snap2.docs.forEach(doc => contactIds.add(doc.data().senderId));
-      
+
       const contacts: User[] = [];
       for (const id of contactIds) {
         if (id && id !== userId) {
@@ -911,11 +946,11 @@ export const dbService = {
     return onSnapshot(q, (snapshot) => {
       const msgs = snapshot.docs.map(doc => {
         const data = doc.data() as Message;
-        return { 
-          id: doc.id, 
+        return {
+          id: doc.id,
           ...data,
-          text: data.deletedForEveryone 
-            ? data.text 
+          text: data.deletedForEveryone
+            ? data.text
             : cryptoService.decryptMessage(data.text, data.senderId, data.receiverId)
         } as Message;
       });
@@ -946,7 +981,7 @@ export const dbService = {
     const path = 'messages';
     try {
       const encryptedText = cryptoService.encryptMessage(message.text, message.senderId, message.receiverId);
-      
+
       await addDoc(collection(db, 'messages'), {
         senderId: message.senderId,
         receiverId: message.receiverId,
@@ -1069,7 +1104,7 @@ export const dbService = {
         });
       }
     } catch (error) {
-       handleFirestoreError(error, OperationType.WRITE, path);
+      handleFirestoreError(error, OperationType.WRITE, path);
     }
   },
 
@@ -1161,18 +1196,18 @@ export const dbService = {
     const path = 'notifications';
     const q = company && company.trim() !== ''
       ? query(
-          collection(db, 'notifications'),
-          where('userId', '==', 'LOGS'),
-          where('company', '==', company),
-          orderBy('timestamp', 'desc'),
-          limit(100)
-        )
+        collection(db, 'notifications'),
+        where('userId', '==', 'LOGS'),
+        where('company', '==', company),
+        orderBy('timestamp', 'desc'),
+        limit(100)
+      )
       : query(
-          collection(db, 'notifications'),
-          where('userId', '==', 'LOGS'),
-          orderBy('timestamp', 'desc'),
-          limit(100)
-        );
+        collection(db, 'notifications'),
+        where('userId', '==', 'LOGS'),
+        orderBy('timestamp', 'desc'),
+        limit(100)
+      );
 
     return onSnapshot(q, (snapshot) => {
       const notifs = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as Notification));
@@ -1200,11 +1235,11 @@ export const dbService = {
   // Interventions
   subscribeToInterventions(userId: string, role: UserRole, callback: (interventions: Intervention[]) => void) {
     const path = 'interventions';
-    const q = role === 'ADMIN' 
+    const q = role === 'ADMIN'
       ? query(collection(db, 'interventions'), orderBy('date', 'asc'))
       : role === 'TOPOGRAPHER'
-        ? query(collection(db, 'interventions'), where('topographerId', '==', userId), orderBy('date', 'asc'))
-        : query(collection(db, 'interventions'), where('clientId', '==', userId), orderBy('date', 'asc'));
+        ? query(collection(db, 'interventions'), where('topographerId', '==', userId))
+        : query(collection(db, 'interventions'), where('clientId', '==', userId));
 
     return onSnapshot(q, (snapshot) => {
       const ints = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) } as Intervention));
@@ -1281,14 +1316,14 @@ export const dbService = {
   // Data Exportation
   exportToCSV(data: any[], filename: string) {
     if (data.length === 0) return;
-    
+
     // Get headers from first object keys
     const headers = Object.keys(data[0]);
     const csvRows = [];
-    
+
     // Add header row
     csvRows.push(headers.join(','));
-    
+
     // Add data rows
     for (const row of data) {
       const values = headers.map(header => {
@@ -1298,7 +1333,7 @@ export const dbService = {
       });
       csvRows.push(values.join(','));
     }
-    
+
     const csvString = csvRows.join('\n');
     const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -1326,7 +1361,7 @@ export const dbService = {
       Perimetre: p.perimeter ? `${p.perimeter} m` : '0',
       Description: p.description
     }));
-    
+
     this.exportToCSV(exportData, `projets_topo_${new Date().toISOString().split('T')[0]}.csv`);
   },
 
@@ -1335,7 +1370,7 @@ export const dbService = {
     try {
       const code = Math.floor(100000 + Math.random() * 900000).toString();
       const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes validity
-      
+
       await setDoc(doc(db, 'admin_otps', userId), {
         userId,
         email,
@@ -1377,7 +1412,7 @@ export const dbService = {
 
       // 2. Increment and enforce max attempts
       const newAttempts = currentAttempts + 1;
-      
+
       if (storedCode === enteredCode) {
         // Success: Clean up and log
         await deleteDoc(doc(db, 'admin_otps', userId));

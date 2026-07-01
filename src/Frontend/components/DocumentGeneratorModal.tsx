@@ -24,6 +24,12 @@ export default function DocumentGeneratorModal({ isOpen, onClose, onSubmit, proj
     return d.toISOString().split('T')[0];
   });
   
+  // Custom states for Quote (Devis)
+  const [validityDays, setValidityDays] = useState('30');
+  const [executionPeriod, setExecutionPeriod] = useState('15 jours');
+  const [depositPercent, setDepositPercent] = useState('30');
+  const [terrainArea, setTerrainArea] = useState('');
+  const [terrainLocation, setTerrainLocation] = useState('');
   if (!isOpen) return null;
 
   const addItem = () => setItems([...items, { id: Math.random().toString(36), description: '', price: 0, quantity: 1 }]);
@@ -135,6 +141,70 @@ export default function DocumentGeneratorModal({ isOpen, onClose, onSubmit, proj
               </select>
             </div>
           </div>
+          {type === 'QUOTE' && (
+  <div className="p-6 bg-amber-500/5 rounded-3xl border border-amber-500/10 space-y-5">
+    <div className="flex items-center gap-2">
+      <div className="w-1.5 h-4 bg-amber-500 rounded" />
+      <h3 className="text-xs font-black uppercase tracking-wider text-amber-800">Spécifications du Devis (Topographie)</h3>
+    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="space-y-1">
+        <label className="text-[9px] font-black uppercase text-muted-foreground ml-1">Validité du Devis</label>
+        <select
+          value={validityDays}
+          onChange={(e) => setValidityDays(e.target.value)}
+          className="w-full bg-zinc-100 border-none rounded-2xl p-3 text-sm font-medium outline-none focus:ring-2 focus:ring-amber-500"
+        >
+          <option value="30">30 jours (Standard)</option>
+          <option value="60">60 jours</option>
+          <option value="90">90 jours</option>
+        </select>
+      </div>
+      <div className="space-y-1">
+        <label className="text-[9px] font-black uppercase text-muted-foreground ml-1">Délai d'exécution</label>
+        <input
+          placeholder="ex: 15 jours"
+          value={executionPeriod}
+          onChange={(e) => setExecutionPeriod(e.target.value)}
+          className="w-full bg-zinc-100 border-none rounded-2xl p-3 text-sm font-medium outline-none"
+        />
+      </div>
+      <div className="space-y-1">
+        <label className="text-[9px] font-black uppercase text-muted-foreground ml-1">Acompte demandé</label>
+        <select
+          value={depositPercent}
+          onChange={(e) => setDepositPercent(e.target.value)}
+          className="w-full bg-zinc-100 border-none rounded-2xl p-3 text-sm font-medium outline-none"
+        >
+          <option value="0">Aucun (0%)</option>
+          <option value="30">30% à la commande</option>
+          <option value="40">40% à la commande</option>
+          <option value="50">50% à la commande</option>
+        </select>
+      </div>
+    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="space-y-1">
+        <label className="text-[9px] font-black uppercase text-muted-foreground ml-1">Superficie estimée</label>
+        <input
+          placeholder="ex: 1200 m² ou 2 Hectares"
+          value={terrainArea}
+          onChange={(e) => setTerrainArea(e.target.value)}
+          className="w-full bg-zinc-100 border-none rounded-2xl p-3 text-sm font-medium outline-none"
+        />
+      </div>
+      <div className="space-y-1">
+        <label className="text-[9px] font-black uppercase text-muted-foreground ml-1">Localisation du Terrain</label>
+        <input
+          placeholder="ex: Tit Mellil, Province de Médiouna"
+          value={terrainLocation}
+          onChange={(e) => setTerrainLocation(e.target.value)}
+          className="w-full bg-zinc-100 border-none rounded-2xl p-3 text-sm font-medium outline-none"
+        />
+      </div>
+    </div>
+  </div>
+)}
 
           <div className="space-y-4">
             <div className="flex justify-between items-center px-1">

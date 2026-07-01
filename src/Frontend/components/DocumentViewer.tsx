@@ -320,6 +320,49 @@ export default function DocumentViewer({ document: doc, isOpen, onClose, onSign,
                  </div>
 
                  <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
+                  {type === 'QUOTE' ? (
+  <div className="space-y-2 w-full">
+    <p className="text-xs text-zinc-600 font-semibold italic leading-relaxed">
+      Devis d'ingénierie topographique estimatif et qualitatif établi selon le cahier des charges du projet.
+    </p>
+    <div className="p-4 bg-amber-500/5 border border-amber-500/10 rounded-2xl space-y-2 text-xs text-zinc-700">
+      {doc.metadata?.validityDays && (
+        <div className="flex justify-between border-b border-amber-500/5 pb-1">
+          <span className="font-bold text-amber-900">Validité du devis :</span>
+          <span>{doc.metadata.validityDays} jours</span>
+        </div>
+      )}
+      {doc.metadata?.executionPeriod && (
+        <div className="flex justify-between border-b border-amber-500/5 pb-1">
+          <span className="font-bold text-amber-900">Délai d'exécution :</span>
+          <span>{doc.metadata.executionPeriod}</span>
+        </div>
+      )}
+      {doc.metadata?.depositPercent && (
+        <div className="flex justify-between border-b border-amber-500/5 pb-1">
+          <span className="font-bold text-amber-900">Modalités d'acompte :</span>
+          <span>{doc.metadata.depositPercent === '0' ? 'Aucun' : `${doc.metadata.depositPercent}% à la commande`}</span>
+        </div>
+      )}
+      {doc.metadata?.terrainArea && (
+        <div className="flex justify-between border-b border-amber-500/5 pb-1">
+          <span className="font-bold text-amber-900">Superficie estimée :</span>
+          <span className="font-mono">{doc.metadata.terrainArea}</span>
+        </div>
+      )}
+      {doc.metadata?.terrainLocation && (
+        <div className="flex justify-between gap-2">
+          <span className="font-bold text-amber-900 shrink-0">Localisation :</span>
+          <span className="text-right">{doc.metadata.terrainLocation}</span>
+        </div>
+      )}
+    </div>
+  </div>
+) : (
+  <p className="text-xs text-zinc-500 italic leading-relaxed">
+    Facture de Prestation Topographique conforme au Code de commerce marocain pour le compte du projet désigné.
+  </p>
+)}
                    {/* Left contact card or project info summary */}
                    <div className="space-y-2 max-w-md">
                      <p className="text-xs text-zinc-500 italic leading-relaxed">
@@ -430,15 +473,20 @@ export default function DocumentViewer({ document: doc, isOpen, onClose, onSign,
                     </tbody>
                   </table>
                 </div>
-
-                {/* Summary & Totals Panel */}
+  {/* Summary & Totals Panel */}
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-8 mb-12">
                   {/* Legal information and banking details */}
                   <div className="flex-1 space-y-4 max-w-sm">
                     <div className="p-4 bg-zinc-50 border border-zinc-100 rounded-xl space-y-2">
-                      <h4 className="text-[10px] font-black uppercase text-zinc-500 tracking-wider">Mode de règlement</h4>
+                      <h4 className="text-[10px] font-black uppercase text-zinc-500 tracking-wider">
+                        {type === 'QUOTE' ? 'Validation & Règlement' : 'Mode de règlement'}
+                      </h4>
                       <p className="text-xs text-zinc-700 leading-relaxed font-semibold">
-                        Par Virement Bancaire ou Chèque sous ordonnance réglementaire.
+                        {type === 'QUOTE' ? (
+                          "Veuillez nous retourner ce devis signé précédé de la mention 'Lu et approuvé'. Le versement de l'acompte valide le début des levés de terrain."
+                        ) : (
+                          "Par Virement Bancaire ou Chèque sous ordonnance réglementaire."
+                        )}
                       </p>
                       <p className="text-[10px] text-zinc-500 leading-normal font-mono">
                         RIB CABINET : {(topographer as any)?.metadata?.rib || '007 780 0000123456789012 34'}
